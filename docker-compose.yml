@@ -1,0 +1,33 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: marketing_db
+    environment:
+      POSTGRES_DB: marketing
+      POSTGRES_USER: analyst
+      POSTGRES_PASSWORD: readonly123
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U analyst -d marketing"]
+      interval: 5s
+      retries: 5
+
+  mcp_server:
+    build: .
+    container_name: mcp_server
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: marketing
+      DB_USER: analyst
+      DB_PASSWORD: readonly123
+    depends_on:
+      postgres:
+        condition: service_healthy
+    stdin_open: true
+    tty: true
