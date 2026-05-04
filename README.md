@@ -4,9 +4,12 @@ A read-only MCP (Model Context Protocol) server exposing structured marketing an
 
 ## Overview
 
-This project demonstrates how to build a controlled, production-safe MCP server that gives an AI assistant access to a relational database — without exposing arbitrary SQL execution.
+This server gives an AI assistant structured access to a marketing analytics database —
+campaigns, audiences, conversions — without exposing a raw SQL interface.
 
-All data access is mediated through five predefined tools. The database role is read-only at the PostgreSQL level and enforced again at the session level in Python.
+Data access is scoped to five explicit tools. The PostgreSQL role is read-only,
+and Python enforces the same constraint at session level — so there's no way to bypass it
+through the model.
 
 ## Stack
 
@@ -54,3 +57,13 @@ Connect any MCP-compatible client to the `mcp_server` container via stdio.
 ├── Dockerfile
 └── requirements.txt
 ```
+## File Reference
+
+| File | Role |
+|---|---|
+| `docker-compose.yml` | Orchestrates PostgreSQL and the MCP server |
+| `db/init.sql` | Schema + 6 campaigns + ~400 rows of daily metrics |
+| `mcp_server/db.py` | Read-only connection layer with parameterised queries |
+| `mcp_server/server.py` | 5 predefined MCP tools — no arbitrary SQL exposed |
+| `Dockerfile` | Minimal Python image |
+| `README.md` | Documentation |
