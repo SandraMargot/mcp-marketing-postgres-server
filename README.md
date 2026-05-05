@@ -12,8 +12,12 @@ and Python enforces the same constraint at session level — so there's no way t
 through the model.
 
 ## Demo
+Checking the MCP server is available before querying:
 
 ![Claude MCP connector](docs/screenshots/MCP_Claude_connector.png)
+
+Claude calling the MCP tools and returning a structured analysis on the data given:
+
 ![Claude MCP answer](docs/screenshots/MCP_claude_answer.png)
 
 ## Stack
