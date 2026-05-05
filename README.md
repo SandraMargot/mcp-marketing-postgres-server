@@ -4,21 +4,28 @@ A read-only MCP (Model Context Protocol) server exposing structured marketing an
 
 ## Overview
 
-This server gives an AI assistant structured access to a marketing analytics database —
-campaigns, audiences, conversions — without exposing a raw SQL interface.
+This server gives an AI assistant structured, read-only access to a marketing 
+analytics database — campaigns, audiences, conversions — without exposing a 
+raw SQL interface.
 
-Data access is scoped to five explicit tools. The PostgreSQL role is read-only,
-and Python enforces the same constraint at session level — so there's no way to bypass it
-through the model.
+The core design question is: how do you let an LLM query production data 
+without trusting it to write safe SQL? The answer here is to never expose SQL 
+at all. The model calls named tools with typed parameters; the server handles 
+the queries. The PostgreSQL role is read-only, and Python enforces the same 
+constraint at session level — so there is no bypass path through the model.
+
+Data access is scoped to five explicit tools covering the most common 
+analytics workflows: campaign performance, channel comparison, trend analysis, 
+and anomaly detection.
 
 ## Demo
 Checking the MCP server is available before querying:
 
-![Claude MCP connector](docs/screenshots/MCP_Claude_connector.png)
+<img src="docs/screenshots/MCP_Claude_connector.png" width="450"/>
 
 Claude calling the MCP tools and returning a structured analysis on the data given:
 
-![Claude MCP answer](docs/screenshots/MCP_claude_answer.png)
+<img src="docs/screenshots/MCP_claude_answer.png" width="450"/>
 
 ## Stack
 
@@ -48,11 +55,28 @@ Claude calling the MCP tools and returning a structured analysis on the data giv
 
 ## Quick Start
 
+**Prerequisites:** Docker >= 24 and Docker Compose v2
+
 ```bash
 docker compose up --build
 ```
 
-Connect any MCP-compatible client to the `mcp_server` container via stdio.
+This spins up a PostgreSQL 16 instance pre-loaded with synthetic data, 
+and the MCP server on top of it.
+
+To verify the data is loaded:
+
+```bash
+docker exec marketing_db psql -U analyst -d marketing -c "SELECT name, channel, status FROM campaigns;"
+```
+
+The MCP server communicates over **stdio** — connect any compatible client 
+(Claude Desktop, custom stdio client) to the `mcp_server` container.
+
+To verify both containers are running:
+```bash
+docker compose ps
+```
 
 ## Project Structure
 
