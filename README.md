@@ -19,13 +19,13 @@ analytics workflows: campaign performance, channel comparison, trend analysis,
 and anomaly detection.
 
 ## Demo
-Checking the MCP server is available before querying:
+- Checking the MCP server is available before querying:
 
 <img src="docs/screenshots/MCP_Claude_connector.png" width="450"/>
 
-Claude calling the MCP tools and returning a structured analysis on the data given:
+- Claude calling the MCP tools and returning a structured analysis on the data given:
 
-<img src="docs/screenshots/MCP_claude_answer.png" width="450"/>
+<img src="docs/screenshots/MCP_claude_answer.png" width="550"/>
 
 ## Stack
 
