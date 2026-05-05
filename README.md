@@ -1,4 +1,4 @@
-# mcp-marketing-postgres-server
+# Controlled AI Access to Marketing Data via MCP
 
 A read-only MCP (Model Context Protocol) server exposing structured marketing analytics to AI assistants via PostgreSQL.
 
@@ -10,6 +10,11 @@ campaigns, audiences, conversions — without exposing a raw SQL interface.
 Data access is scoped to five explicit tools. The PostgreSQL role is read-only,
 and Python enforces the same constraint at session level — so there's no way to bypass it
 through the model.
+
+## Demo
+
+![Claude MCP connector](docs/screenshots/MCP_Claude_connector.png)
+![Claude MCP answer](docs/screenshots/MCP_claude_answer.png)
 
 ## Stack
 
